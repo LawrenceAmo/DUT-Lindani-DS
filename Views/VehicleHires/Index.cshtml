@@ -1,0 +1,175 @@
+﻿@model IEnumerable<lindaniDS.Models.VehicleHire>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+<div class="row p-3">
+    <div class="col-md-2 mx-5 p-3 text-center border border-success font-weight-bold rounded b-dark">
+        <span class="text-center rounded">Total Vehicles: 274</span>
+    </div>
+    <div class="col-md-2 mx-5 p-3 rounded border border-success text-center font-weight-bold">
+        Damaged Vehicles: 14
+    </div>
+
+    <div class="col-md-2 mx-5 p-3 rounded border border-success text-center font-weight-bold">
+        Hired Vehicles: 94
+    </div>
+    <div class="col-md-2 mx-5 p-3 rounded border border-success text-center font-weight-bold">
+        Available Vehicles: 183
+    </div>
+</div>
+
+
+<hr />
+
+@Html.ActionLink("Add New Vehicle", "Create", new { @class = "btn btn-sm btn-primary text-success" })
+@*<i class="fa fa-apple"></i>*@
+
+<div class="row px-3 mt-0 pt-2">
+    <div class="col-md-7 mr-5 p-0 border border-dark rounded">
+        <div id="chart_div"></div>
+
+    </div>
+    <div class="col-md-4 border border-success rounded p-0">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <div id="piechart_3d" style="width: 430px; height: 350px;"></div>
+
+    </div>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.VehicleModel.vehicleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.color)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.regNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.noPlate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.condition)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.availability)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleModel.vehicleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.regNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.noPlate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.condition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.availability)
+            </td>
+            <td>
+                @Html.ActionLink(" | ", "Edit", new { id = item.vehicleID }, new { @class = "fa fa-pencil text-dark" })
+                @Html.ActionLink(" | ", "Details", new { id = item.vehicleID }, new { @class = "fa fa-eye text-dark" })
+                @Html.ActionLink("`", "Delete", new { id = item.vehicleID }, new { @class = "fa fa-trash text-dark" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@*///////////////////////////////////////////////////////////////////////////////////////////////////////////*@
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Work', 11],
+            ['Eat', 2],
+            ['Commute', 2],
+            ['Watch TV', 2],
+            ['Sleep', 7]
+        ]);
+
+        var options = {
+            title: 'My Daily Activities',
+            is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+    };
+
+
+    ////////////////////////////////////////// Column Chart ///////////////////////////////////////////////
+
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Year', 'Sales', 'Expenses', 'Profit'],
+            ['2014', 1000, 400, 200],
+            ['2015', 1170, 460, 250],
+            ['2016', 660, 1120, 300],
+            ['2017', 1030, 540, 350]
+        ]);
+
+        var options = {
+            chart: {
+                title: 'Company Performance',
+                subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+            },
+            bars: 'vertical',
+            vAxis: { format: 'decimal' },
+            height: 400,
+            colors: ['#1b9e77', '#d95f02', '#7570b3']
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('chart_div'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+
+        var btns = document.getElementById('btn-group');
+
+        btns.onclick = function (e) {
+
+            if (e.target.tagName === 'BUTTON') {
+                options.vAxis.format = e.target.id === 'none' ? '' : e.target.id;
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+            }
+        }
+    };
+
+</script>
+
